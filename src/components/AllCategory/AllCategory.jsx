@@ -7,7 +7,7 @@ const AllCategory = () => {
     <div className='categories'>
         <h2>All Categories</h2>
         <div className='cards'>
-            <Card/>mm
+            <Card/>
             <Card/>
             <Card/>
             <Card/>

@@ -4,6 +4,7 @@ import HeroSection from '../components/HeroSection/HeroSection'
 import LatestBlogs from '../components/LatestBlogs/LatestBlogs'
 import NewTechnology from '../components/NewTechnology/NewTechnology'
 import AllCategory from '../components/AllCategory/AllCategory'
+import Footer from '../components/Footer/Footer'
 
 const HomePage = () => {
   return (
@@ -13,6 +14,7 @@ const HomePage = () => {
         <LatestBlogs/>
         <NewTechnology/>
         <AllCategory/>
+        <Footer/>
     </div>
   )
 }
