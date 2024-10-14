@@ -1,0 +1,71 @@
+.latest-section{
+    padding: 8vh 10vh;
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    flex-direction: row;
+}
+.latest-section h1{
+    font-size: 2.5em;
+}
+.latest-blog{
+    margin-left: 30px;
+}
+.latest-blog img{
+    width: 100vh;
+    margin-top: 20px;
+}
+
+.latest-blog h4, .trending-blogs h4{
+    font-size: 12px;
+}
+.latest-blog h4 span, .trending-blogs span{
+    color: #ff5959;
+}
+.latest-blog h2{
+    margin: 10px 0;
+}
+.latest-blog p{
+    width: 100vh;
+}
+.latest-blog button{
+    background: #ff5959;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 15px;
+    margin-top: 20px;
+}
+
+/* Trending Blogs*/
+
+.trending-blogs{
+    width: 80vh;
+    margin-left: 30px;
+}
+.trending-heading{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.trending-heading h1{
+    font-size: 2.5em;
+}
+.trending-heading span:hover{
+    color: #ff5959;
+    cursor: pointer;
+}
+.blog{
+    margin-top: 40px;
+    margin-left: 20px;
+}
+.trending-blogs h2{
+    width: 60vh;
+}
+.blog-highlight{
+    background: #ff5959;
+    color: #fff;
+    padding: 20px 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+}

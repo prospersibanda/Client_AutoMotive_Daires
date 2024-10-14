@@ -5,11 +5,12 @@
     background-size: cover;
     background-position: center;
     width: 100%;
+    font-family: "Poppins", sans-serif;
 }
 
 .hero-section h1{
     color: #fff;
-    font-size: 4.5em;
+    font-size: 4.2em;
     padding-top: 100px;
     padding-left: 50px;
 }
@@ -18,7 +19,7 @@
     color: #fff;
     padding-top: 50px;
     padding-left: 50px;
-    font-size: 1.5em;
+    font-size: 1.2em;
     width: 80vh;
 }
 
