@@ -1,0 +1,52 @@
+.new-technology{
+    margin: 0 100px;
+    padding-bottom: 10vh;
+    border-bottom: 1px solid black                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ;
+    font-family: "Poppins", sans-serif;
+}
+
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.header span{
+    font-weight: 900;
+}
+.header span:hover{
+    color: #ff5959;
+    cursor: pointer;
+}
+.newTech-card{
+    background: lightgray;
+    border-radius: 10px;
+    width: 40vh;
+    padding: 20px 20px;
+}
+.main-img{
+    width: 40vh;
+    border-radius: 10px;
+}
+.newTech-card h3{
+    margin-top: 20px;
+    font-size: 18px;
+}
+.author{
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+.author img{
+    width: 8vh;
+    border-radius: 50%;
+}
+.author-head p{
+    font-size: 12px;
+}
+.cards{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}

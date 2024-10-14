@@ -1,0 +1,26 @@
+.categories{
+    margin: 50px 100px;
+    font-family: "Poppins", sans-serif;
+}
+.category-card{
+    background: lightgray;
+    width: 30vh;
+    padding: 10px 50px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.category-card img{
+    width: 30vh;
+    border-radius: 50%;
+}
+.category-card h3{
+    margin-left: 50px;
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: 900;
+}
+.category-card p{
+    width: 40vh;
+}
