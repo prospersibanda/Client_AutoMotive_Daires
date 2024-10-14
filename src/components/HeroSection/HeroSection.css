@@ -1,0 +1,35 @@
+.hero-section{
+    margin: 0;
+    height: 90vh;
+    background-image: url('/src/assets/hero.jpg');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+}
+
+.hero-section h1{
+    color: #fff;
+    font-size: 4.5em;
+    padding-top: 100px;
+    padding-left: 50px;
+}
+
+.hero-section p {
+    color: #fff;
+    padding-top: 50px;
+    padding-left: 50px;
+    font-size: 1.5em;
+    width: 80vh;
+}
+
+.hero-section button{
+    margin-left: 50px;
+    margin-top: 30px;
+    padding: 15px 50px;
+    border-radius: 10px;
+    border: none;
+    color: #fff;
+    font-weight: 900;
+    font-size: 16px;
+    background: #ff5959;
+}
