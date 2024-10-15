@@ -1,0 +1,71 @@
+.blogs-hero{
+    font-family: "Poppins", sans-serif;
+    background: #31323c;
+    height: 53vh;
+    padding: 20px 100px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+.blogs-hero-left h1{
+    width: 80vh;
+}
+
+.blogs-hero-left button{
+    margin-left: 50px;
+    margin-top: 30px;
+    padding: 15px 50px;
+    border-radius: 10px;
+    border: none;
+    color: #fff;
+    font-weight: 900;
+    font-size: 16px;
+    background: #ff5959;
+}
+
+
+.image-stack-container {
+    display: flex;
+    align-items: center;
+    margin-top: 23vh;
+    margin-left: 10vh;
+  }
+  
+  .image-stack {
+    display: flex;
+    position: relative;
+    width: 250px;
+    height: 450px; 
+  }
+  
+  .stack-image {
+    position: absolute;
+    width: 20vh;
+    height: auto;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Optional: shadow effect */
+  }
+  
+  .stack-image:nth-child(1) {
+    z-index: 1;
+    transform: translateY(-50px) translateX(100px);
+  }
+  
+  .stack-image:nth-child(2) {
+    z-index: 2;
+    transform: translateY(100px) translateX(180px);
+  }
+  
+  .stack-image:nth-child(3) {
+    z-index: 3;
+    transform: translateY(-60px) translateX(270px);
+  }
+  
+  .stack-image:nth-child(4) {
+    z-index: 1;
+    transform: translateY(30px) translateX(380px);
+  }
+  
+  
