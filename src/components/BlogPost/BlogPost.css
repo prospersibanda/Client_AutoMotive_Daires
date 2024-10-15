@@ -1,0 +1,52 @@
+.blog-post{
+    font-family: "Poppins", sans-serif;
+    padding: 0 100px;
+}
+
+.blog-post img{
+    width: 160vh;
+    height: 70vh;
+    margin-left: 10vh;
+}
+.blog-post h1{
+    margin-left: 10vh;
+    font-size: 3.2em;
+}
+.author-info{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.author-info img{
+    width: 5vh;
+    height: 5vh;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.author-info h4{
+    margin-right: 20px;
+}
+.read-section{
+    margin-left: 150px;
+}
+.read-section h2{
+    margin-top: 20px;
+    font-size: 2.2em;
+}
+.read-section p{
+    width: 150vh;
+    margin-top: 20px;
+}
+.read-section ul{
+    margin-top: 20px;
+}
+.post-engagement{
+    font-size: 22px;
+    margin-left: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 15vh;
+    gap: 20px;
+}
