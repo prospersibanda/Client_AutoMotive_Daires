@@ -1,0 +1,59 @@
+.all-posts{
+    font-family: "Poppins", sans-serif;
+    padding: 40px 100px;
+}
+
+.all-posts h2{
+    font-size: 28px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid black;
+}
+.post-card{
+    padding: 30px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+}
+.post-card img{
+    width: 70vh;
+}
+
+.author-profile{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.author-profile img{
+    width: 5vh;
+    border-radius: 50%;
+}
+.author-profile h4{
+    font-size: 12px;
+}
+.author-profile p{
+    font-size: 10px;
+}
+
+.post-info{
+    margin-left: 30px;
+}
+.post-info h3{
+    font-size: 28px;
+}
+.post-para{
+    margin-top: 10px;
+}
+.post-info button{
+    background: #ff5959;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 900;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
