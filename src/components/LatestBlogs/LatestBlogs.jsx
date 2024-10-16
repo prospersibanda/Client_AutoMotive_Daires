@@ -1,56 +1,64 @@
 import React from 'react';
-import './LatestBlogs.css'
-import latest_img from '../../assets/latest_blog.jpg';
+import './LatestBlogs.css';
+import { useSelector } from 'react-redux'; // Import useSelector to access Redux store
+import { useNavigate } from 'react-router-dom'; // Import useNavigate to handle blog navigation
 
 const LatestBlogs = () => {
+  const navigate = useNavigate();
+
+  const blogs = useSelector((state) => state.blogs.blogPosts); // Fetch all blog posts from Redux store
+
+  // Find the latest blog post by sorting the blogs by date
+  const latestBlog = blogs.length > 0 
+    ? blogs.reduce((latest, current) => new Date(current.datePosted) > new Date(latest.datePosted) ? current : latest, blogs[0])
+    : null;
+
+  // Filter trending blogs
+  const trendingBlogs = blogs.filter((blog) => blog.isTrending);
+
+  // Function to handle blog navigation
+  const handleReadMore = (id) => {
+    navigate(`/post/${id}`); // Navigate to the blog post page by its ID
+  };
+
   return (
     <div className='latest-section'>
+      {/* Display latest blog */}
+      {latestBlog && (
         <div className='latest-blog'>
-            <h1>Latest</h1>
-            <img src={latest_img} alt="Latest Blog" />
-            <h4>By <span>Prosper Sibanda</span> || October 14, 2024</h4>
-            <h2> The Legendary Camaro Behind Bumblebee</h2>
-            <p>From the silver screen to the open road, the Chevrolet 
-                Camaro has been more than just a car—it’s a pop culture 
-                icon. Known as Bumblebee in the Transformers franchise, 
-                this muscle car isn’t just about speed and power; it’s 
-                about personality. With its sleek design, roaring engine, 
-                and unmistakable presence, the Camaro brings a blend of 
-                classic muscle and futuristic tech. Dive into the story 
-                of how this legendary car became a fan favorite and why 
-                it continues to captivate drivers and movie lovers alike.
-            </p>
-            <button>Read More</button>
+          <h1>Latest</h1>
+          <img src={latestBlog.image} alt={latestBlog.title} />
+          <h4>
+            By <span>{latestBlog.author.name}</span> || {new Date(latestBlog.datePosted).toLocaleDateString()}
+          </h4>
+          <h2>{latestBlog.title}</h2>
+          <p>{latestBlog.shortDescription}</p>
+          <button onClick={() => handleReadMore(latestBlog.id)}>Read More</button>
         </div>
+      )}
 
-        <div className='trending-blogs'>
-            <div className='trending-heading'>
-                <h1>Trending Blogs</h1>
-                <span>See all</span>
-            </div>
-            <div className='blog'>
-                <h4>By <span>Prosper Sibanda </span>| Oct 10, 2024</h4>
-                <h2>The Legendary Camaro Behind Bumbleebee</h2>
-            </div>
-            <div className='blog-highlight'>
-                <h4>By Prosper Sibanda | Oct 10, 2024</h4>
-                <h2>The Legendary Camaro Behind Bumbleebee</h2>
-            </div>
-            <div className='blog'>
-                <h4>By <span>Prosper Sibanda </span>| Oct 10, 2024</h4>
-                <h2>The Legendary Camaro Behind Bumbleebee</h2>
-            </div>
-            <div className='blog'>
-                <h4>By <span>Prosper Sibanda </span>| Oct 10, 2024</h4>
-                <h2>The Legendary Camaro Behind Bumbleebee</h2>
-            </div>
-            <div className='blog'>
-                <h4>By <span>Prosper Sibanda </span>| Oct 10, 2024</h4>
-                <h2>The Legendary Camaro Behind Bumbleebee</h2>
-            </div>
+      {/* Display trending blogs */}
+      <div className='trending-blogs'>
+        <div className='trending-heading'>
+          <h1>Trending Blogs</h1>
+          <span>See all</span>
         </div>
+        
+        {trendingBlogs.map((blog, index) => (
+          <div
+            className={index === 1 ? 'blog-highlight' : 'blog'} // Highlight second trending blog
+            key={blog.id}
+            onClick={() => handleReadMore(blog.id)} // Navigate to blog post on click
+          >
+            <h4>
+              By <span>{blog.author.name}</span> | {new Date(blog.datePosted).toLocaleDateString()}
+            </h4>
+            <h2>{blog.title}</h2>
+          </div>
+        ))}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default LatestBlogs
+export default LatestBlogs;

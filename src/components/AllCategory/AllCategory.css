@@ -2,10 +2,14 @@
     margin: 50px 100px;
     font-family: "Poppins", sans-serif;
 }
+.cards{
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
 .category-card{
     background: lightgray;
     width: 30vh;
-    padding: 10px 50px;
+    padding: 10px 30px;
     border-radius: 10px;
     align-items: center;
     justify-content: center;
@@ -13,7 +17,8 @@
 }
 .category-card img{
     width: 30vh;
-    border-radius: 50%;
+    height: 20vh;
+    border-radius: 10px;
 }
 .category-card h3{
     margin-left: 50px;
@@ -22,5 +27,5 @@
     font-weight: 900;
 }
 .category-card p{
-    width: 40vh;
+    width: 30vh;
 }

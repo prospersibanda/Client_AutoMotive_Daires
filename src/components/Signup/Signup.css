@@ -1,0 +1,37 @@
+.signup{
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+}
+.signup-left{
+    background: #ff5959;
+    color: #fff;
+    width: 40%;
+    padding: 40px 100px;
+}
+
+.signup-img img{
+    margin-top: 32px;
+    width: 90vh;
+}
+
+.signup-right{
+    padding: 50px 100px;
+}
+.signup-right h2{
+    margin-bottom: 50px;
+}
+.head{
+    margin-bottom: 50px;
+}
+.input-field{
+    margin-bottom: 20px;
+}
+.input-field input{
+    width: 50vh;
+    height: 5vh;
+    border-radius: 10px;
+    border: 1px solid gray;
+}
+.signup-right span{
+    color: #ff5959;
+}

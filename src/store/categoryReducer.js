@@ -2,31 +2,31 @@ const initialState = {
     categories: [
       {
         id: 1,
-        image: 'https://example.com/category-sportscars.jpg',
+        image: '/src/assets/cate_sport_cars.jpg',
         title: 'Sports Cars',
         description: 'High-performance cars designed for speed and handling.',
       },
       {
         id: 2,
-        image: 'https://example.com/category-electric.jpg',
+        image: '/src/assets/cate_electric_cars.jpg',
         title: 'Electric Cars',
         description: 'Eco-friendly cars powered by electricity with zero emissions.',
       },
       {
         id: 3,
-        image: 'https://example.com/category-suvs.jpg',
+        image: '/src/assets/cate_suvs.jpg',
         title: 'SUVs',
         description: 'Versatile vehicles with extra space and off-road capability.',
       },
       {
         id: 4,
-        image: 'https://example.com/category-luxury.jpg',
+        image: '/src/assets/cate-luxury-cars.jpg',
         title: 'Luxury Cars',
         description: 'Cars that combine performance with unmatched comfort and luxury.',
       },
       {
         id: 5,
-        image: 'https://example.com/category-maintenance.jpg',
+        image: '/src/assets/cate_maintainance.jpg',
         title: 'Car Maintenance',
         description: 'Everything you need to know to keep your car in peak condition.',
       },

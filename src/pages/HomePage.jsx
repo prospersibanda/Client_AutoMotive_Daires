@@ -2,9 +2,9 @@ import React from 'react'
 import Navbar from '../components/Navbar/Navbar'
 import HeroSection from '../components/HeroSection/HeroSection'
 import LatestBlogs from '../components/LatestBlogs/LatestBlogs'
-import NewTechnology from '../components/NewTechnology/NewTechnology'
 import AllCategory from '../components/AllCategory/AllCategory'
 import Footer from '../components/Footer/Footer'
+import PostsHome from '../components/NewTechnology/PostsHome'
 
 const HomePage = () => {
   return (
@@ -12,7 +12,7 @@ const HomePage = () => {
         <Navbar/>
         <HeroSection/>
         <LatestBlogs/>
-        <NewTechnology/>
+        <PostsHome/>
         <AllCategory/>
         <Footer/>
     </div>

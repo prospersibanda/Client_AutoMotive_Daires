@@ -56,7 +56,7 @@ const initialState = {
       },
       {
         id: 3,
-        image: 'https://example.com/car3.jpg',
+        image: '/src/assets/affordable_suvs.jpg',
         title: 'Top 5 Affordable SUVs',
         shortDescription: 'A rundown of the most affordable SUVs with the best features.',
         longDescription: 'A detailed review of the top 5 affordable SUVs for families and adventurers alike.',
@@ -76,7 +76,7 @@ const initialState = {
       },
       {
         id: 4,
-        image: 'https://example.com/car4.jpg',
+        image: '/src/assets/luxury_cars.jpg',
         title: 'Luxury Cars: The Ultimate Driving Experience',
         shortDescription: 'Luxury cars that redefine comfort and performance.',
         longDescription: 'A comprehensive guide to the best luxury cars of the year, featuring top brands like Rolls Royce and Bentley.',
@@ -103,7 +103,7 @@ const initialState = {
       },
       {
         id: 5,
-        image: 'https://example.com/car5.jpg',
+        image: '/src/assets/maintain_car.jpg',
         title: 'How to Maintain Your Car in Top Condition',
         shortDescription: 'Essential tips and tricks for keeping your car in peak performance.',
         longDescription: 'From regular maintenance checks to seasonal care, this guide will help you keep your car running smoothly all year round.',
@@ -134,6 +134,9 @@ const initialState = {
   const ADD_BLOG = 'ADD_BLOG';
   const UPDATE_BLOG = 'UPDATE_BLOG';
   const DELETE_BLOG = 'DELETE_BLOG';
+  const UPDATE_LIKE = 'UPDATE_LIKE';
+const UPDATE_SHARE = 'UPDATE_SHARE';
+const TOGGLE_BOOKMARK = 'TOGGLE_BOOKMARK';
   
   const blogReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -154,6 +157,33 @@ const initialState = {
           ...state,
           blogPosts: state.blogPosts.filter((post) => post.id !== action.payload),
         };
+      case UPDATE_LIKE:
+        return {
+        ...state,
+        blogPosts: state.blogPosts.map((post) =>
+          post.id === action.payload.id
+            ? { ...post, likeCount: action.payload.likeCount }
+            : post
+        ),
+      };
+      case UPDATE_SHARE:
+        return {
+        ...state,
+        blogPosts: state.blogPosts.map((post) =>
+          post.id === action.payload.id
+            ? { ...post, shares: action.payload.shares }
+            : post
+        ),
+      };
+      case TOGGLE_BOOKMARK:
+        return {
+        ...state,
+        blogPosts: state.blogPosts.map((post) =>
+          post.id === action.payload.id
+            ? { ...post, isBookmarked: !post.isBookmarked }
+            : post
+        ),
+      };
       default:
         return state;
     }
@@ -172,6 +202,21 @@ const initialState = {
   export const deleteBlog = (id) => ({
     type: DELETE_BLOG,
     payload: id,
+  });
+
+  export const updateLike = (id, likeCount) => ({
+    type: UPDATE_LIKE,
+    payload: { id, likeCount },
+  });
+  
+  export const updateShare = (id, shares) => ({
+    type: UPDATE_SHARE,
+    payload: { id, shares },
+  });
+  
+  export const toggleBookmark = (id) => ({
+    type: TOGGLE_BOOKMARK,
+    payload: { id },
   });
   
   export default blogReducer;

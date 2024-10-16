@@ -1,4 +1,4 @@
-.navbar{
+.navbar {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -11,28 +11,38 @@
     font-family: "Poppins", sans-serif;
 }
 
-.active{
+.active {
     font-weight: 900;
 }
-.nav-right{
+
+/* Remove underline and default link color */
+.nav-links li a {
+    text-decoration: none; /* Remove underline */
+    color: white; /* Set link color to white */
+}
+
+.nav-links li a:hover {
+    color: #ff5959; /* Optional: Change color on hover */
+}
+
+.nav-right {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.nav-links{
+.nav-links {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    text-decoration: none;
     list-style-type: none;
     margin: 0 20px;
     font-size: 18px;
 }
 
-.nav-right button{
+.nav-right button {
     padding: 10px 15px;
     border-radius: 5px;
     border: none;
@@ -40,4 +50,10 @@
     font-weight: 600;
     color: #fff;
     background: #ff5959;
+}
+
+/* Style the active link */
+.nav-links li a.active {
+    font-weight: 900;
+    color: #ff5959; /* Optional: Different color for active link */
 }

@@ -14,8 +14,12 @@
     display: flex;
     flex-direction: row;
 }
-.post-card img{
+.post-image{
     width: 70vh;
+    height: 40vh;
+}
+.post-engagement{
+    margin-left: 40vh !important;
 }
 
 .author-profile{
@@ -25,6 +29,7 @@
     gap: 15px;
     margin-top: 10px;
 }
+  
 
 .author-profile img{
     width: 5vh;
