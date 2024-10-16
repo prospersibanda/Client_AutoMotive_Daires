@@ -131,7 +131,7 @@ const initialState = {
     ],
   };
   
-  const ADD_BLOG = 'ADD_BLOG';
+  const ADD_BLOG_POST = 'ADD_BLOG_POST';
   const UPDATE_BLOG = 'UPDATE_BLOG';
   const DELETE_BLOG = 'DELETE_BLOG';
   const UPDATE_LIKE = 'UPDATE_LIKE';
@@ -140,7 +140,7 @@ const TOGGLE_BOOKMARK = 'TOGGLE_BOOKMARK';
   
   const blogReducer = (state = initialState, action) => {
     switch (action.type) {
-      case ADD_BLOG:
+      case ADD_BLOG_POST:
         return {
           ...state,
           blogPosts: [...state.blogPosts, action.payload],
@@ -189,8 +189,8 @@ const TOGGLE_BOOKMARK = 'TOGGLE_BOOKMARK';
     }
   };
   
-  export const addBlog = (blog) => ({
-    type: ADD_BLOG,
+  export const addBlogPost = (blog) => ({
+    type: ADD_BLOG_POST,
     payload: blog,
   });
   
