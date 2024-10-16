@@ -7,13 +7,19 @@ import TrendingPage from './pages/TrendingPage';
 import PostingPage from './pages/PostingPage';
 import SignupLoginPage from './pages/SignupLoginPage';
 import LoginPage from './pages/LoginPage';
+import ProtectedRoute from './auth/ProtectedRoute';
 
 function App() {
   return (
     <div>
       <Router>
         <Routes>
-          <Route path='/' element={<HomePage />} />
+          <Route 
+          path='/'
+           element={
+            <ProtectedRoute>
+                <HomePage />
+            </ProtectedRoute>} />
           <Route path='/signup' element={<SignupLoginPage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/blogs' element={<BlogsPage />} />

@@ -53,6 +53,7 @@
 }
 .post-info button{
     background: #ff5959;
+    width: 30vh;
     color: #fff;
     font-size: 14px;
     font-weight: 900;

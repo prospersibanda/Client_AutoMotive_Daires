@@ -24,6 +24,7 @@
 }
 
 .hero-section button{
+    width: 40vh;
     margin-left: 50px;
     margin-top: 30px;
     padding: 15px 50px;
