@@ -1,23 +1,23 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
-import thunk from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { thunk } from 'redux-thunk'; // Import thunk as a named export
+import { composeWithDevTools } from '@redux-devtools/extension'; // Correct import for redux dev tools
 
 // Import your reducers
-import blogReducer from './reducers/blogReducer';
 import authReducer from './reducers/authReducer';
-import commentReducer from './reducers/commentReducer';
+import blogReducer from './reducers/blogReducer';
+import categoryReducer from './reducers/categoryReducer';
 
 // Combine the reducers
 const rootReducer = combineReducers({
   auth: authReducer,
   blogs: blogReducer,
-  comments: commentReducer,
+  categories: categoryReducer,
 });
 
 // Create the Redux store
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
+  composeWithDevTools(applyMiddleware(thunk)) // Apply middleware with devtools
 );
 
 export default store;

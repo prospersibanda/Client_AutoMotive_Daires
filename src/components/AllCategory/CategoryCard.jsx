@@ -9,6 +9,6 @@ const CategoryCard = ({ category }) => {
       <p>{category.description}</p>
     </div>
   );
-}
+};
 
 export default CategoryCard;

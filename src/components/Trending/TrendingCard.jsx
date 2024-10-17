@@ -1,9 +1,9 @@
 import React from 'react';
 import './Trending.css';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
 
 const TrendingCard = ({ post }) => {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   // Function to handle navigation to the blog post page
   const handleReadMore = () => {
@@ -15,10 +15,10 @@ const TrendingCard = ({ post }) => {
       <img className='trending-img' src={post.image} alt={post.title} />
       <h3>{post.title}</h3>
       <div className='author-profile'>
-        <img src={post.author.profilePicture} alt={post.author.name} />
+        <img src={post.author?.profilePicture} alt={post.author?.name || 'Unknown Author'} />
         <div className='author-info'>
-          <h4>{post.author.name}</h4>
-          <p>{new Date(post.datePosted).toLocaleDateString()} - {post.readTime}</p>
+          <h4>{post.author?.name || 'Unknown Author'}</h4>
+          <p>{new Date(post.datePosted).toLocaleDateString()} - {post.readTime} min read</p>
         </div>
       </div>
       <p className='trending-description'>{post.shortDescription}</p>

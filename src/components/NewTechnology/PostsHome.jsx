@@ -1,12 +1,14 @@
 import React from 'react';
 import './PostsHome.css';
 import Card from './Card';
-import { useSelector } from 'react-redux'; // Import useSelector to access Redux store
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const PostsHome = () => {
   const navigate = useNavigate();
-  const blogs = useSelector((state) => state.blogs.blogPosts); // Fetch all blog posts from Redux store
+  
+  // Fetch all blog posts from Redux store
+  const blogs = useSelector((state) => state.blogs.blogs); 
 
   // Function to get 4 random blog posts
   const getRandomPosts = (posts, count) => {

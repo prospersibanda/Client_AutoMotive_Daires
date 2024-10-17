@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './PostBlogPage.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addBlogPost } from '../../store/blogReducer'; // Action to add blog post
+import { createBlog } from '../../store/actions/blogActions'; // Action to create a new blog
 import placeholderImage from '../../assets/placeholder.png'; // Placeholder image
 
 const PostBlogPage = () => {
@@ -10,13 +10,11 @@ const PostBlogPage = () => {
 
   const [formData, setFormData] = useState({
     title: '',
-    image: null, // Will store the image file
+    image: null, // Store the image file
     authorName: loggedInUser?.fullname || '', // Set author name from logged-in user
     authorProfilePicture: loggedInUser?.profilePicture || '',
     shortDescription: '',
     longDescription: '',
-    datePosted: '', // Date will be set automatically
-    readTime: '',
     category: '',
     isTrending: false, // Default false
   });
@@ -38,21 +36,40 @@ const PostBlogPage = () => {
     if (file) {
       setFormData({
         ...formData,
-        image: URL.createObjectURL(file), // Store image URL
+        image: file, // Store the actual image file
       });
     }
+  };
+
+  // Automatically calculate read time based on word count (200 words/minute)
+  const calculateReadTime = (text) => {
+    const wordsPerMinute = 200;
+    const words = text.split(/\s+/).length;
+    return Math.ceil(words / wordsPerMinute);
   };
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newBlogPost = {
-      ...formData,
-      authorName: loggedInUser.fullname,
-      authorProfilePicture: loggedInUser.profilePicture,
-      datePosted: new Date().toISOString(), // Auto set current date
-    };
-    dispatch(addBlogPost(newBlogPost)); // Dispatch the blog post to Redux
+
+    // Automatically calculate the read time
+    const readTime = calculateReadTime(formData.longDescription);
+
+    // Create FormData object to handle image file upload
+    const blogData = new FormData();
+    blogData.append('title', formData.title);
+    blogData.append('shortDescription', formData.shortDescription);
+    blogData.append('longDescription', formData.longDescription);
+    blogData.append('category', formData.category);
+    blogData.append('authorName', loggedInUser.fullname);
+    blogData.append('authorProfilePicture', loggedInUser.profilePicture);
+    blogData.append('readTime', readTime);
+    blogData.append('isTrending', formData.isTrending);
+    blogData.append('image', formData.image); // Append the image file
+    blogData.append('datePosted', new Date().toISOString());
+
+    // Dispatch the action to create a new blog
+    dispatch(createBlog(blogData));
 
     // Reset form after submission
     setFormData({
@@ -62,8 +79,6 @@ const PostBlogPage = () => {
       authorProfilePicture: loggedInUser?.profilePicture || '',
       shortDescription: '',
       longDescription: '',
-      datePosted: '',
-      readTime: '',
       category: '',
       isTrending: false,
     });
@@ -105,17 +120,6 @@ const PostBlogPage = () => {
         </div>
 
         <div className='form-group'>
-          <label>Read Time (in minutes)</label>
-          <input
-            type='text'
-            name='readTime'
-            value={formData.readTime}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className='form-group'>
           <label>Category</label>
           <select
             name='category'
@@ -136,7 +140,7 @@ const PostBlogPage = () => {
           <label>Upload Image</label>
           <div className='image-upload'>
             <img
-              src={formData.image || placeholderImage}
+              src={formData.image ? URL.createObjectURL(formData.image) : placeholderImage}
               alt='Blog'
               className='image-placeholder'
             />

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateLike, updateShare, toggleBookmark } from '../../store/blogReducer';
+import { likeBlog, shareBlog, toggleBookmark } from '../../store/actions/blogActions'; // Use actions from Redux store
 import './BlogPost.css';
 import { FaBookmark, FaHeart, FaRegBookmark, FaRegComment, FaRegHeart, FaShareAlt } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
@@ -9,7 +9,8 @@ const BlogPost = () => {
   const { id } = useParams(); // Get the blog post ID from the URL
   const dispatch = useDispatch();
 
-  const blogPost = useSelector((state) => state.blogs.blogPosts.find(post => post.id === parseInt(id))); // Find the specific post by ID
+  // Get the specific blog post from the Redux store by its ID
+  const blogPost = useSelector((state) => state.blogs.blogs.find((post) => post.id === parseInt(id)));
 
   // Scroll to top when the component is mounted
   useEffect(() => {
@@ -18,14 +19,12 @@ const BlogPost = () => {
 
   // Handle like
   const handleLike = () => {
-    const newLikeCount = blogPost.likeCount > 0 ? blogPost.likeCount - 1 : blogPost.likeCount + 1;
-    dispatch(updateLike(blogPost.id, newLikeCount)); // Update the like count in the Redux store
+    dispatch(likeBlog(blogPost.id)); // Update the like count in the Redux store
   };
 
   // Handle share
   const handleShare = () => {
-    const newShareCount = blogPost.shares + 1;
-    dispatch(updateShare(blogPost.id, newShareCount)); // Update the share count in the store
+    dispatch(shareBlog(blogPost.id)); // Update the share count in the store
   };
 
   // Handle bookmark
@@ -41,19 +40,23 @@ const BlogPost = () => {
     <div className='blog-post'>
       <img src={blogPost.image} alt={blogPost.title} />
       <div className='post-engagement'>
-        {blogPost.likeCount > 0 ? (
+        {/* Like section */}
+        {blogPost.likes > 0 ? (
           <FaHeart onClick={handleLike} />
         ) : (
           <FaRegHeart onClick={handleLike} />
         )}
-        <span>{blogPost.likeCount}</span>
+        <span>{blogPost.likes}</span>
 
+        {/* Comments section */}
         <FaRegComment />
         <span>{blogPost.comments.length}</span>
 
+        {/* Share section */}
         <FaShareAlt onClick={handleShare} />
         <span>{blogPost.shares}</span>
 
+        {/* Bookmark section */}
         {blogPost.isBookmarked ? (
           <FaBookmark onClick={handleBookmark} />
         ) : (
@@ -63,12 +66,14 @@ const BlogPost = () => {
 
       <h1>{blogPost.title}</h1>
 
+      {/* Author info section */}
       <div className='author-info'>
         <img src={blogPost.author.profilePicture} alt={blogPost.author.name} />
         <h4>{blogPost.author.name}</h4>
-        <p>{new Date(blogPost.datePosted).toLocaleDateString()} - {blogPost.readTime}</p>
+        <p>{new Date(blogPost.datePosted).toLocaleDateString()} - {blogPost.readTime} min read</p>
       </div>
 
+      {/* Blog content */}
       <div className='read-section'>
         <div>
           <h2>{blogPost.longDescription.split('.')[0]}</h2>

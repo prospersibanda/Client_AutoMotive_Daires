@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Login.css';
 import phone_img from '../../assets/signup.png';
-import { useDispatch, useSelector } from 'react-redux'; // Use useDispatch and useSelector from Redux
-import { login } from '../../store/authReducer'; // Import login action
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../store/actions/authActions';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { error } = useSelector((state) => state.auth); // Get the error message from the Redux store
+  const { error, isAuthenticated } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -28,15 +28,22 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login(formData)); // Dispatch login action
-    navigate('/'); // Navigate to home page after successful login
   };
+
+  // Navigate to home page only if authenticated and prevent repeated navigation
+  useEffect(() => {
+    if (isAuthenticated) {
+      console.log('Navigating to home...');
+      navigate('/', { replace: true }); // Use { replace: true } to prevent push history.
+    }
+  }, [isAuthenticated, navigate]); // Ensure it only runs when `isAuthenticated` changes.
 
   return (
     <div className='Login'>
       <div className='Login-left'>
         <h2>Social Media shared today, tomorrow or by location</h2>
         <div className='Login-img'>
-          <img src={phone_img} alt="" />
+          <img src={phone_img} alt="Login visual" />
         </div>
       </div>
 

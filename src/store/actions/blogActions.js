@@ -20,6 +20,26 @@ export const likeBlog = (blogId) => async (dispatch) => {
   }
 };
 
+// Share a blog
+export const shareBlog = (blogId) => async (dispatch) => {
+  try {
+    const { data } = await axios.post(`/api/blogs/${blogId}/share`);
+    dispatch({ type: 'SHARE_BLOG_SUCCESS', payload: { blogId, shares: data.shares } });
+  } catch (error) {
+    dispatch({ type: 'SHARE_BLOG_FAIL', payload: error.message });
+  }
+};
+
+// Toggle bookmark
+export const toggleBookmark = (blogId) => async (dispatch) => {
+  try {
+    const { data } = await axios.post(`/api/blogs/${blogId}/bookmark`);
+    dispatch({ type: 'TOGGLE_BOOKMARK_SUCCESS', payload: { blogId, isBookmarked: data.isBookmarked } });
+  } catch (error) {
+    dispatch({ type: 'TOGGLE_BOOKMARK_FAIL', payload: error.message });
+  }
+};
+
 // Fetch trending blogs
 export const fetchTrendingBlogs = () => async (dispatch) => {
   try {

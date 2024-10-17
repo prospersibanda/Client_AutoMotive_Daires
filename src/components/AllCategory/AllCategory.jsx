@@ -1,21 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategories } from '../../store/reducers/categoryReducer';
 import './AllCategory.css';
 import CategoryCard from './CategoryCard';
-import { useSelector } from 'react-redux'; // Import useSelector to access the Redux store
 
 const AllCategory = () => {
-  const categories = useSelector((state) => state.categories.categories); // Get categories from Redux store
+  const dispatch = useDispatch();
+  const { categories = [], loading, error } = useSelector((state) => state.category);
+
+  useEffect(() => {
+    dispatch(fetchCategories()); // Fetch categories on mount
+  }, [dispatch]);
+
+  if (loading) return <p>Loading categories...</p>;
+  if (error) return <p>Error loading categories: {error}</p>;
 
   return (
     <div className='categories'>
       <h2>All Categories</h2>
       <div className='cards'>
-        {categories.map((category) => (
-          <CategoryCard key={category.id} category={category} /> // Pass category data as props to CategoryCard
-        ))}
+        {Array.isArray(categories) && categories.length > 0 ? (
+          categories.map((category) => (
+            <CategoryCard key={category.id} category={category} />
+          ))
+        ) : (
+          <p>No categories available</p>
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default AllCategory;
