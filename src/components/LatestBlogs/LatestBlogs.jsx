@@ -24,12 +24,12 @@ const LatestBlogs = () => {
   return (
     <div className='latest-section'>
       {/* Display latest blog */}
-      {latestBlog && (
+      {latestBlog && latestBlog.author && (
         <div className='latest-blog'>
           <h1>Latest</h1>
           <img src={latestBlog.image} alt={latestBlog.title} />
           <h4>
-            By <span>{latestBlog.author.name}</span> || {new Date(latestBlog.datePosted).toLocaleDateString()}
+            By <span>{latestBlog.author.name || 'Unknown Author'}</span> || {new Date(latestBlog.datePosted).toLocaleDateString()}
           </h4>
           <h2>{latestBlog.title}</h2>
           <p>{latestBlog.shortDescription}</p>
@@ -44,14 +44,14 @@ const LatestBlogs = () => {
           <span>See all</span>
         </div>
         
-        {trendingBlogs.map((blog, index) => (
+        {trendingBlogs.map((blog) => (
           <div
-            className={index === 1 ? 'blog-highlight' : 'blog'} // Highlight second trending blog
+            className='blog'
             key={blog.id}
-            onClick={() => handleReadMore(blog.id)} // Navigate to blog post on click
+            onClick={() => handleReadMore(blog.id)}
           >
             <h4>
-              By <span>{blog.author.name}</span> | {new Date(blog.datePosted).toLocaleDateString()}
+              By <span>{blog.author?.name || 'Unknown Author'}</span> | {new Date(blog.datePosted).toLocaleDateString()}
             </h4>
             <h2>{blog.title}</h2>
           </div>

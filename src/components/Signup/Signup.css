@@ -21,7 +21,7 @@
     margin-bottom: 50px;
 }
 .head{
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 .input-field{
     margin-bottom: 20px;
@@ -35,3 +35,50 @@
 .signup-right span{
     color: #ff5959;
 }
+
+.image-uploader {
+    width: 50px;
+    height: 50px;
+    margin: 0;
+    margin-top: -5vh;
+    margin-bottom: 5vh;
+  }
+  
+  .image-placeholder {
+    position: relative;
+    width: 10vh;
+    height: 10vh;
+    border-radius: 50%; /* Make it round */
+    overflow: hidden; /* Clip the image within the circle */
+    border: 3px solid #ddd;
+  }
+  
+  .profile-image {
+    width: 10vh;
+    height: 10vh;
+    object-fit: cover; /* Ensure the image covers the circle */
+  }
+  
+  .edit-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .edit-icon {
+    color: white;
+    font-size: 20px;
+  }
+  
+  input[type="file"] {
+    display: none; /* Hide the file input field */
+  }
+  

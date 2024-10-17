@@ -1,44 +1,65 @@
 import React, { useState } from 'react';
 import './PostBlogPage.css';
-import { useDispatch } from 'react-redux';
-import { addBlog } from '../../store/blogReducer'; // Assuming you have an action to add a blog
+import { useDispatch, useSelector } from 'react-redux';
+import { addBlogPost } from '../../store/blogReducer'; // Action to add blog post
+import placeholderImage from '../../assets/placeholder.png'; // Placeholder image
 
 const PostBlogPage = () => {
   const dispatch = useDispatch();
+  const loggedInUser = useSelector((state) => state.auth.user); // Get logged-in user info from Redux
 
-  // Form state
-  const [blog, setBlog] = useState({
+  const [formData, setFormData] = useState({
     title: '',
-    image: '',
-    authorName: '',
-    authorProfilePicture: '',
+    image: null, // Will store the image file
+    authorName: loggedInUser?.fullname || '', // Set author name from logged-in user
+    authorProfilePicture: loggedInUser?.profilePicture || '',
     shortDescription: '',
     longDescription: '',
-    datePosted: '',
+    datePosted: '', // Date will be set automatically
     readTime: '',
     category: '',
-    isTrending: false,
+    isTrending: false, // Default false
   });
 
-  // Handle input change
+  const categories = ['Sports Cars', 'Electric Cars', 'Luxury Cars', 'SUV']; // Example categories
+
+  // Handle input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setBlog({
-      ...blog,
-      [name]: value,
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
     });
+  };
+
+  // Handle image upload
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFormData({
+        ...formData,
+        image: URL.createObjectURL(file), // Store image URL
+      });
+    }
   };
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addBlog(blog)); // Dispatch action to add blog
-    // Reset form
-    setBlog({
+    const newBlogPost = {
+      ...formData,
+      authorName: loggedInUser.fullname,
+      authorProfilePicture: loggedInUser.profilePicture,
+      datePosted: new Date().toISOString(), // Auto set current date
+    };
+    dispatch(addBlogPost(newBlogPost)); // Dispatch the blog post to Redux
+
+    // Reset form after submission
+    setFormData({
       title: '',
-      image: '',
-      authorName: '',
-      authorProfilePicture: '',
+      image: null,
+      authorName: loggedInUser?.fullname || '',
+      authorProfilePicture: loggedInUser?.profilePicture || '',
       shortDescription: '',
       longDescription: '',
       datePosted: '',
@@ -49,48 +70,15 @@ const PostBlogPage = () => {
   };
 
   return (
-    <div className='post-blog'>
-      <h2>Post a New Blog</h2>
+    <div className='post-blog-page'>
+      <h2>Create a New Blog Post</h2>
       <form onSubmit={handleSubmit}>
         <div className='form-group'>
-          <label>Blog Title</label>
+          <label>Title</label>
           <input
             type='text'
             name='title'
-            value={blog.title}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className='form-group'>
-          <label>Blog Image URL</label>
-          <input
-            type='text'
-            name='image'
-            value={blog.image}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className='form-group'>
-          <label>Author Name</label>
-          <input
-            type='text'
-            name='authorName'
-            value={blog.authorName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className='form-group'>
-          <label>Author Profile Picture URL</label>
-          <input
-            type='text'
-            name='authorProfilePicture'
-            value={blog.authorProfilePicture}
+            value={formData.title}
             onChange={handleChange}
             required
           />
@@ -100,7 +88,7 @@ const PostBlogPage = () => {
           <label>Short Description</label>
           <textarea
             name='shortDescription'
-            value={blog.shortDescription}
+            value={formData.shortDescription}
             onChange={handleChange}
             required
           ></textarea>
@@ -110,21 +98,10 @@ const PostBlogPage = () => {
           <label>Long Description</label>
           <textarea
             name='longDescription'
-            value={blog.longDescription}
+            value={formData.longDescription}
             onChange={handleChange}
             required
           ></textarea>
-        </div>
-
-        <div className='form-group'>
-          <label>Date Posted</label>
-          <input
-            type='date'
-            name='datePosted'
-            value={blog.datePosted}
-            onChange={handleChange}
-            required
-          />
         </div>
 
         <div className='form-group'>
@@ -132,7 +109,7 @@ const PostBlogPage = () => {
           <input
             type='text'
             name='readTime'
-            value={blog.readTime}
+            value={formData.readTime}
             onChange={handleChange}
             required
           />
@@ -140,13 +117,40 @@ const PostBlogPage = () => {
 
         <div className='form-group'>
           <label>Category</label>
-          <input
-            type='text'
+          <select
             name='category'
-            value={blog.category}
+            value={formData.category}
             onChange={handleChange}
             required
-          />
+          >
+            <option value='' disabled>Select a category</option>
+            {categories.map((category, index) => (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className='form-group'>
+          <label>Upload Image</label>
+          <div className='image-upload'>
+            <img
+              src={formData.image || placeholderImage}
+              alt='Blog'
+              className='image-placeholder'
+            />
+            <input
+              type='file'
+              accept='image/*'
+              onChange={handleImageUpload}
+              style={{ display: 'none' }}
+              id='imageUpload'
+            />
+            <label htmlFor='imageUpload' className='image-upload-label'>
+              Choose Image
+            </label>
+          </div>
         </div>
 
         <div className='form-group'>
@@ -154,10 +158,8 @@ const PostBlogPage = () => {
             <input
               type='checkbox'
               name='isTrending'
-              checked={blog.isTrending}
-              onChange={() =>
-                setBlog({ ...blog, isTrending: !blog.isTrending })
-              }
+              checked={formData.isTrending}
+              onChange={handleChange}
             />
             Trending
           </label>

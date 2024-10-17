@@ -44,8 +44,12 @@
 
 .logout-btn{
     padding: 10px 15px;
+<<<<<<< HEAD
     margin: 0;
     width: 10vh;
+=======
+    margin-top: -0.5vh;
+>>>>>>> adf7854e0ec4d706e66bb64ef4286f27d0a2e096
     border-radius: 5px;
     border: none;
     font-size: 13px;

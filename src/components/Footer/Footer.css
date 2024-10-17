@@ -60,6 +60,7 @@
 
 .footer-newsletter button {
     width: 20vh;
+    margin-top: -0.5vh;
     padding: 15px 10px;
     margin: 0;
     border: none;

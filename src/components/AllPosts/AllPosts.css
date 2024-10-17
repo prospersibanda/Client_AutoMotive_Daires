@@ -52,7 +52,11 @@
 }
 .post-info button{
     background: #ff5959;
+<<<<<<< HEAD
     width: 40vh;
+=======
+    width: 30vh;
+>>>>>>> adf7854e0ec4d706e66bb64ef4286f27d0a2e096
     color: #fff;
     font-size: 14px;
     font-weight: 900;

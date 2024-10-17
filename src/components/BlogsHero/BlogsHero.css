@@ -13,6 +13,11 @@
 }
 
 .blogs-hero-left button{
+<<<<<<< HEAD
+=======
+    margin-left: 0px;
+    width: 30vh;
+>>>>>>> adf7854e0ec4d706e66bb64ef4286f27d0a2e096
     margin-top: 30px;
     padding: 15px 50px;
     width: 30vh;
