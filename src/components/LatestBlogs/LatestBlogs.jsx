@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './LatestBlogs.css';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +6,19 @@ import { useNavigate } from 'react-router-dom';
 const LatestBlogs = () => {
   const navigate = useNavigate();
 
-  const blogs = useSelector((state) => state.blogs.blogs); // Fetch all blog posts from Redux store
+  // Fetch all blog posts from Redux store, log the blogs for debugging
+  const blogs = useSelector((state) => state.blogs.blogs || []);
+
+  // Debugging: log the shape of blogs
+  useEffect(() => {
+    console.log("Fetched blogs:", blogs);
+  }, [blogs]);
+
+  // Ensure blogs is an array before proceeding
+  if (!Array.isArray(blogs)) {
+    console.error("blogs is not an array:", blogs);
+    return <p>Error: Blogs data is invalid.</p>;
+  }
 
   // Find the latest blog post by sorting the blogs by date
   const latestBlog = blogs.length > 0 
@@ -14,7 +26,7 @@ const LatestBlogs = () => {
     : null;
 
   // Filter trending blogs based on your isTrending criteria
-  const trendingBlogs = blogs.filter((blog) => blog.isTrending); // No restriction on number of blogs
+  const trendingBlogs = blogs.filter((blog) => blog.isTrending);
 
   // Function to handle blog navigation
   const handleReadMore = (id) => {
@@ -24,7 +36,7 @@ const LatestBlogs = () => {
   return (
     <div className='latest-section'>
       {/* Display latest blog */}
-      {latestBlog && latestBlog.author && (
+      {latestBlog && latestBlog.author ? (
         <div className='latest-blog'>
           <h1>Latest</h1>
           <img src={latestBlog.image} alt={latestBlog.title} />
@@ -35,13 +47,15 @@ const LatestBlogs = () => {
           <p>{latestBlog.shortDescription}</p>
           <button onClick={() => handleReadMore(latestBlog.id)}>Read More</button>
         </div>
+      ) : (
+        <p>No latest blog available</p>
       )}
 
       {/* Display trending blogs */}
       <div className='trending-blogs'>
         <div className='trending-heading'>
           <h1>Trending Blogs</h1>
-          <span onClick={() => navigate('/trending')}>See all</span> {/* Add navigation to a dedicated page for all trending blogs */}
+          <span onClick={() => navigate('/trending')}>See all</span> {/* Navigation to a dedicated page for all trending blogs */}
         </div>
 
         {trendingBlogs.length > 0 ? (

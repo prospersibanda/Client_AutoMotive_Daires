@@ -6,7 +6,9 @@ import CategoryCard from './CategoryCard';
 
 const AllCategory = () => {
   const dispatch = useDispatch();
-  const { categories = [], loading, error } = useSelector((state) => state.category);
+  
+  // Ensure that categories is initialized as an empty array if it's undefined
+  const { categories = [], loading, error } = useSelector((state) => state.category || {});
 
   useEffect(() => {
     dispatch(fetchCategories()); // Fetch categories on mount

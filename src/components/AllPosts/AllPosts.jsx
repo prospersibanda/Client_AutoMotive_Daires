@@ -7,9 +7,9 @@ import { fetchBlogs } from '../../store/actions/blogActions'; // Import the fetc
 const AllPosts = () => {
   const dispatch = useDispatch();
   
-  // Fetch blog posts from the store
-  const blogPosts = useSelector((state) => state.blogs.blogs); // Assuming 'blogs' holds the list of blogs
-  
+  // Fetch blog posts from the store, provide a default empty array if undefined
+  const blogPosts = useSelector((state) => state.blogs.blogs || []); // Ensure 'blogs' is an array
+
   // Fetch blogs on component mount
   useEffect(() => {
     dispatch(fetchBlogs()); // Fetch all blogs
@@ -20,7 +20,7 @@ const AllPosts = () => {
     <div className='all-posts'>
       <h2>All posts</h2>
       <div>
-        {blogPosts.length > 0 ? (
+        {Array.isArray(blogPosts) && blogPosts.length > 0 ? (
           blogPosts.map((post) => (
             <PostCard key={post.id} post={post} /> // Pass each post to PostCard
           ))
