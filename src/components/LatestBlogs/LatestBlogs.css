@@ -29,6 +29,7 @@
 }
 .latest-blog button{
     background: #ff5959;
+    width: 30vh;
     border: none;
     padding: 10px 40px;
     border-radius: 10px;

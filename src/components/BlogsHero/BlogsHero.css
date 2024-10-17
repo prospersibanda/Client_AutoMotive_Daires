@@ -13,9 +13,9 @@
 }
 
 .blogs-hero-left button{
-    margin-left: 50px;
     margin-top: 30px;
     padding: 15px 50px;
+    width: 30vh;
     border-radius: 10px;
     border: none;
     color: #fff;

@@ -37,7 +37,7 @@ const Navbar = () => {
             </NavLink>
           </li>
         </ul>
-        <button>Logout</button>
+        <button className='logout-btn'>Logout</button>
       </div>
     </div>
   );

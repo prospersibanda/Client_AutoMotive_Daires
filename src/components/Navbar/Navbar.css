@@ -42,8 +42,10 @@
     font-size: 18px;
 }
 
-.nav-right button {
+.logout-btn{
     padding: 10px 15px;
+    margin: 0;
+    width: 10vh;
     border-radius: 5px;
     border: none;
     font-size: 13px;

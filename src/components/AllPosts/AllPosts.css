@@ -18,9 +18,7 @@
     width: 70vh;
     height: 40vh;
 }
-.post-engagement{
-    margin-left: 40vh !important;
-}
+
 
 .author-profile{
     display: flex;
@@ -44,6 +42,7 @@
 
 .post-info{
     margin-left: 30px;
+    width: 100vh;
 }
 .post-info h3{
     font-size: 28px;
@@ -53,6 +52,7 @@
 }
 .post-info button{
     background: #ff5959;
+    width: 40vh;
     color: #fff;
     font-size: 14px;
     font-weight: 900;

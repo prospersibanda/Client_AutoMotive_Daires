@@ -1,14 +1,23 @@
-import { createStore, combineReducers } from 'redux';
-import blogReducer from './blogReducer';
-import categoryReducer from './categoryReducer';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
-// Combine reducers
+// Import your reducers
+import blogReducer from './reducers/blogReducer';
+import authReducer from './reducers/authReducer';
+import commentReducer from './reducers/commentReducer';
+
+// Combine the reducers
 const rootReducer = combineReducers({
+  auth: authReducer,
   blogs: blogReducer,
-  categories: categoryReducer,
+  comments: commentReducer,
 });
 
-// Create store
-const store = createStore(rootReducer);
+// Create the Redux store
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk))
+);
 
 export default store;

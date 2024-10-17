@@ -1,4 +1,5 @@
 import React from 'react';
+import './AllPosts.css'
 import { useDispatch, useSelector } from 'react-redux'; // UseSelector to sync with the store
 import { useNavigate } from 'react-router-dom';
 import { updateLike, updateShare, toggleBookmark } from '../../store/blogReducer';
