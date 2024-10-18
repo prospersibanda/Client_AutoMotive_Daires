@@ -100,7 +100,7 @@ const PostBlogPage = () => {
         </div>
 
         <div className='form-group'>
-          <label>Short Description</label>
+          <label>Description</label>
           <textarea
             name='shortDescription'
             value={formData.shortDescription}

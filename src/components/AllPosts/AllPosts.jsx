@@ -8,7 +8,10 @@ const AllPosts = () => {
   const dispatch = useDispatch();
   
   // Fetch blog posts from the store, provide a default empty array if undefined
-  const blogPosts = useSelector((state) => state.blogs.blogs || []); // Ensure 'blogs' is an array
+  const blogPosts = useSelector((state) => state.blogs.blogs || []);
+
+  // Debugging: Log the fetched blog posts
+  console.log("Fetched blog posts:", blogPosts);
 
   // Fetch blogs on component mount
   useEffect(() => {
@@ -22,6 +25,8 @@ const AllPosts = () => {
       <div>
         {Array.isArray(blogPosts) && blogPosts.length > 0 ? (
           blogPosts.map((post) => (
+            // Debugging: Log each post before rendering
+            console.log("Rendering post:", post),
             <PostCard key={post.id} post={post} /> // Pass each post to PostCard
           ))
         ) : (
