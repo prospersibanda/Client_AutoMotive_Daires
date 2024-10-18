@@ -9,7 +9,16 @@ import SignupLoginPage from './pages/SignupLoginPage';
 import LoginPage from './pages/LoginPage';
 import ProtectedRoute from './auth/ProtectedRoute';
 
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { loadUserFromStorage } from './store/actions/authActions';
+
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadUserFromStorage()); // Load user from localStorage when the app initializes
+  }, [dispatch]);
   return (
     <div>
       <Router>

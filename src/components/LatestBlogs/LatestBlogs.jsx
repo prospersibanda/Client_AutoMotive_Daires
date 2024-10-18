@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 const LatestBlogs = () => {
   const navigate = useNavigate();
 
-  // Fetch all blog posts from Redux store, log the blogs for debugging
+  // Fetch all blog posts from Redux store
   const blogs = useSelector((state) => state.blogs.blogs || []);
 
-  // Debugging: log the shape of blogs
+  // Debugging: log the fetched blogs
   useEffect(() => {
     console.log("Fetched blogs:", blogs);
   }, [blogs]);
@@ -25,8 +25,10 @@ const LatestBlogs = () => {
     ? blogs.reduce((latest, current) => new Date(current.datePosted) > new Date(latest.datePosted) ? current : latest, blogs[0])
     : null;
 
-  // Filter trending blogs based on your isTrending criteria
-  const trendingBlogs = blogs.filter((blog) => blog.isTrending);
+  // Get top 4 trending blogs sorted by likes
+  const trendingBlogs = blogs
+    .sort((a, b) => b.likes - a.likes) // Sort blogs by number of likes in descending order
+    .slice(0, 4); // Select the top 4 blogs
 
   // Function to handle blog navigation
   const handleReadMore = (id) => {

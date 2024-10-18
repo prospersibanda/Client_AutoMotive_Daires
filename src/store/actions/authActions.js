@@ -1,25 +1,25 @@
 import api from './api'; // Import the configured Axios instance
 
 // Login action
-// Login action
 export const login = (userCredentials) => async (dispatch) => {
-    try {
-      const { data } = await api.post('/api/auth/login', userCredentials); // Backend API call
-      dispatch({
-        type: 'LOGIN_SUCCESS',
-        payload: {
-          userData: data.userData, // Extract user data from response
-          token: data.token,       // Extract token from response
-        },
-      });
-      localStorage.setItem('token', data.token); // Optionally store token in localStorage
-    } catch (error) {
-      dispatch({
-        type: 'LOGIN_FAIL',
-        payload: error.response?.data?.message || 'Login failed',
-      });
-    }
-  };
+  try {
+    const { data } = await api.post('/api/auth/login', userCredentials); // Backend API call
+    dispatch({
+      type: 'LOGIN_SUCCESS',
+      payload: {
+        userData: data.userData, // User data from the response
+        token: data.token,       // Token from the response
+      },
+    });
+    localStorage.setItem('token', data.token); // Store token in localStorage
+  } catch (error) {
+    dispatch({
+      type: 'LOGIN_FAIL',
+      payload: error.response?.data?.message || 'Login failed', // Handle error
+    });
+  }
+};
+
 // Signup action
 export const signup = (userData) => async (dispatch) => {
     try {
@@ -44,3 +44,40 @@ export const signup = (userData) => async (dispatch) => {
     }
   };
 
+ // Fetch current logged-in user
+ export const fetchCurrentUser = () => async (dispatch) => {
+  try {
+    const { data } = await api.get('/api/auth/me'); // Call to get the current user's info
+    dispatch({ type: 'FETCH_USER_SUCCESS', payload: data }); // Dispatch success
+  } catch (error) {
+    dispatch({
+      type: 'FETCH_USER_FAIL',
+      payload: error.message, // Handle error
+    });
+  }
+};
+
+// Helper function to safely parse JSON
+const safeJSONParse = (data) => {
+  try {
+    return JSON.parse(data);
+  } catch (error) {
+    return null; // Return null if parsing fails
+  }
+};
+
+// Check if token exists and load user info
+export const loadUserFromStorage = () => (dispatch) => {
+  const token = localStorage.getItem('token');
+  const user = safeJSONParse(localStorage.getItem('user')); // Use safeJSONParse for user data
+
+  if (token && user) {
+    dispatch({
+      type: 'LOGIN_SUCCESS',
+      payload: {
+        token,
+        userData: user,
+      },
+    });
+  }
+};

@@ -2,59 +2,73 @@ import React from 'react';
 import './AllPosts.css';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { likeBlog } from '../../store/actions/blogActions'; // Import action for liking a blog
+import { likeBlog } from '../../store/actions/blogActions'; 
 import { FaBookmark, FaHeart, FaRegBookmark, FaRegComment, FaRegHeart, FaShareAlt } from 'react-icons/fa';
 
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Debugging: Log the post data passed into PostCard
-  console.log("PostCard received post:", post);
-
-  // Handle like
   const handleLike = () => {
-    dispatch(likeBlog(post.id)); // Dispatch likeBlog action to update like count
+    dispatch(likeBlog(post.id)); 
   };
 
-  // Handle navigation to the BlogPostPage
   const handleReadFullArticle = () => {
-    navigate(`/post/${post.id}`); // Navigate to the blog post page with the post ID
+    navigate(`/post/${post.id}`);
   };
 
-  // Debugging: Check the image and author information
-  console.log(post.image); // This should print the full URL to the image
-  console.log(post.author?.name); // Check if author information is correctly passed
+  // Log the entire post object to understand its structure
+  console.log('Post Object:', post);
+
+  // Safely accessing post.author fields
+  const authorName = post.author?.name || post.author?.fullname || 'Unknown Author'; 
+  const authorProfilePic = post.author?.profilePicture || '/default-profile-pic.jpg'; 
+
+  // Additional logging for debugging
+  console.log('Author Name:', authorName);
+  console.log('Profile Picture URL:', authorProfilePic);
+
+  // Ensure post.description is a string
+  if (typeof post.description !== 'string') {
+    console.error('Post description is not a string:', post.description);
+  }
+
+  // Check likes, comments, and shares
+  console.log('Likes:', post.likes);
+  console.log('Comments:', post.comments);
+  console.log('Shares:', post.shares);
 
   return (
     <div className='post-card'>
       <img className='post-image' src={post.image} alt={post.title} />
       <div className='post-info'>
         <h3>{post.title}</h3>
+
         <div className='author-profile'>
-          <img src={post.author?.profilePicture || '/default-profile.jpg'} alt={post.author?.name || 'Unknown Author'} />
+          <img src={authorProfilePic} alt={authorName} />
           <div className='author-info'>
-            <h4>{post.author?.name || 'Unknown Author'}</h4>
+            <h4>{authorName}</h4>
             <p>{new Date(post.datePosted).toLocaleDateString()} - {post.readTime} min read</p>
           </div>
         </div>
+
         <p className='post-para'>{post.description}</p>
 
         <button onClick={handleReadFullArticle}>Read full article</button>
 
         <div className='post-engagement'>
-          {post.likes > 0 ? (
+          {typeof post.likes === 'number' && post.likes > 0 ? (
             <FaHeart onClick={handleLike} />
           ) : (
             <FaRegHeart onClick={handleLike} />
           )}
-          <span>{post.likes}</span>
+          <span>{typeof post.likes === 'number' ? post.likes : 0}</span>
 
           <FaRegComment />
-          <span>{post.comments.length}</span>
+          <span>{Array.isArray(post.comments) ? post.comments.length : 0}</span>
 
           <FaShareAlt onClick={handleReadFullArticle} />
-          <span>{post.shares}</span>
+          <span>{typeof post.shares === 'number' ? post.shares : 0}</span>
 
           {post.isBookmarked ? (
             <FaBookmark onClick={handleReadFullArticle} />

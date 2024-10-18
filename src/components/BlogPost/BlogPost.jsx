@@ -1,56 +1,80 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { likeBlog, shareBlog, toggleBookmark } from '../../store/actions/blogActions'; // Use actions from Redux store
+import { likeBlog, shareBlog, toggleBookmark, addComment, fetchBlogs } from '../../store/actions/blogActions';
 import './BlogPost.css';
 import { FaBookmark, FaHeart, FaRegBookmark, FaRegComment, FaRegHeart, FaShareAlt } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 
 const BlogPost = () => {
-  const { id } = useParams(); // Get the blog post ID from the URL
+  const { id } = useParams(); // Get the blog ID from the URL
   const dispatch = useDispatch();
 
-  // Get the specific blog post from the Redux store by its ID
-  const blogPost = useSelector((state) => state.blogs.blogs.find((post) => post.id === parseInt(id)));
+  const [commentText, setCommentText] = useState('');
+  const [showAllComments, setShowAllComments] = useState(false);
 
-  // Debugging: log the current blog post
-  console.log("Loaded BlogPost:", blogPost);
+  // Fetch blogs from the store
+  const blogs = useSelector((state) => state.blogs.blogs);
+  const loadingBlogs = useSelector((state) => state.blogs.loading); // Get loading state from Redux
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated); // Get isAuthenticated from Redux
+  const loggedInUser = useSelector((state) => state.auth.user); // Get the logged-in user details
 
-  // Scroll to top when the component is mounted
+  // Find the specific blog post based on the ID
+  const blogPost = blogs.find((post) => post.id === parseInt(id));
+
+  // If the blog post isn't in the state, fetch all blogs
   useEffect(() => {
-    window.scrollTo(0, 0); // Scrolls the window to the top
+    if (!blogs.length) {
+      dispatch(fetchBlogs()); // Fetch all blogs if no blogs are present in the state
+    }
+  }, [dispatch, blogs.length]);
+
+  // Scroll to the top when the component is loaded
+  useEffect(() => {
+    window.scrollTo(0, 0);
   }, []);
 
-  // Handle like
   const handleLike = () => {
     if (blogPost) {
-      dispatch(likeBlog(blogPost.id)); // Update the like count in the Redux store
+      dispatch(likeBlog(blogPost.id));
     }
   };
 
-  // Handle share
   const handleShare = () => {
     if (blogPost) {
-      dispatch(shareBlog(blogPost.id)); // Update the share count in the store
+      dispatch(shareBlog(blogPost.id));
     }
   };
 
-  // Handle bookmark
   const handleBookmark = () => {
     if (blogPost) {
-      dispatch(toggleBookmark(blogPost.id)); // Toggle the bookmark status in the Redux store
+      dispatch(toggleBookmark(blogPost.id));
     }
   };
 
+  const handleAddComment = () => {
+    if (commentText.trim()) {
+      dispatch(addComment(blogPost.id, commentText));
+      setCommentText('');
+    }
+  };
+
+  // Display loading message if blogs are still being fetched
+  if (loadingBlogs) {
+    return <p>Loading blog post...</p>;
+  }
+
+  // Check if the blog post is found, otherwise show "Not Found"
   if (!blogPost) {
     return <p>Blog post not found!</p>;
   }
+
+  const visibleComments = showAllComments ? blogPost.comments : blogPost.comments.slice(0, 2);
 
   return (
     <div className='blog-post'>
       <img className="blog-image" src={blogPost.image} alt={blogPost.title} />
 
       <div className='post-engagement'>
-        {/* Like section */}
         {blogPost.likes > 0 ? (
           <FaHeart onClick={handleLike} />
         ) : (
@@ -58,15 +82,12 @@ const BlogPost = () => {
         )}
         <span>{blogPost.likes}</span>
 
-        {/* Comments section */}
         <FaRegComment />
         <span>{blogPost.comments.length}</span>
 
-        {/* Share section */}
         <FaShareAlt onClick={handleShare} />
         <span>{blogPost.shares}</span>
 
-        {/* Bookmark section */}
         {blogPost.isBookmarked ? (
           <FaBookmark onClick={handleBookmark} />
         ) : (
@@ -76,41 +97,64 @@ const BlogPost = () => {
 
       <h1>{blogPost.title}</h1>
 
-      {/* Author info section */}
       <div className='author-info'>
-        <img src={blogPost.author?.profilePicture || '/default-profile.jpg'} alt={blogPost.author?.name || 'Unknown Author'} />
-        <h4>{blogPost.author?.name || 'Unknown Author'}</h4>
+        <img
+          src={blogPost.author?.profilePicture || '/default-profile.jpg'}
+          alt={typeof blogPost.author?.name === 'string' ? blogPost.author.name : 'Unknown Author'}
+        />
+        <h4>{typeof blogPost.author?.name === 'string' ? blogPost.author.name : 'Unknown Author'}</h4>
         <p>{new Date(blogPost.datePosted).toLocaleDateString()} - {blogPost.readTime} min read</p>
       </div>
 
-      {/* Blog content */}
       <div className='read-section'>
-        <div>
-          <h2>{blogPost.description.split('.')[0]}</h2>
-          <p>{blogPost.content}</p>
-        </div>
+        <h2>{blogPost.description.split('.')[0]}</h2>
+        <p>{blogPost.content}</p>
       </div>
+
       <div className='comments'>
         <h2>Comments</h2>
-        <div className='comment'>
-          <div className="comment-author">
-            <img src={blogPost.image} alt="" />
-            <h4>Prosper Sibanda</h4>
+
+        {isAuthenticated && (
+          <div className='write-comment'>
+            <div className='comment-author'>
+              <img
+                src={loggedInUser?.profilePic || '/default-profile.jpg'}
+                alt={loggedInUser?.fullname || 'Anonymous'}
+              />
+              <h4>{loggedInUser?.fullname || 'Anonymous'}</h4>
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder='Write a comment...'
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+              />
+              <button onClick={handleAddComment}>Post</button>
+            </div>
           </div>
-          <div className='comment-text'>
-            <p>This is a basic comment</p>
+        )}
+
+        {visibleComments.map((comment) => (
+          <div className='comment' key={comment.id}>
+            <div className="comment-author">
+              <img
+                src={comment.authorProfilePic || '/default-profile.jpg'}
+                alt={typeof comment.authorName === 'string' ? comment.authorName : 'Unknown Author'}
+              />
+              <h4>{typeof comment.authorName === 'string' ? comment.authorName : 'Unknown Author'}</h4>
+            </div>
+            <div className='comment-text'>
+              <p>{comment.text}</p>
+            </div>
           </div>
-        </div>
-        <div className='comment'>
-          <div className="comment-author">
-            <img src={blogPost.image} alt="" />
-            <h4>Prosper Sibanda</h4>
-          </div>
-          <div className='comment-text'>
-            <p>This is a basic comment</p>
-          </div>
-        </div>
-        <p>See all</p>
+        ))}
+
+        {blogPost.comments.length > 2 && (
+          <p className='see-all' onClick={() => setShowAllComments(!showAllComments)}>
+            {showAllComments ? 'Hide comments' : 'See all'}
+          </p>
+        )}
       </div>
     </div>
   );

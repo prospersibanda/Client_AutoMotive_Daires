@@ -6,17 +6,14 @@ import { fetchBlogs } from '../../store/actions/blogActions'; // Import the fetc
 
 const AllPosts = () => {
   const dispatch = useDispatch();
-  
+
   // Fetch blog posts from the store, provide a default empty array if undefined
   const blogPosts = useSelector((state) => state.blogs.blogs || []);
 
   // Debugging: Log the fetched blog posts
-  console.log("Fetched blog posts:", blogPosts);
-
-  // Fetch blogs on component mount
   useEffect(() => {
-    dispatch(fetchBlogs()); // Fetch all blogs
-    window.scrollTo(0, 0); // Scroll to the top
+    dispatch(fetchBlogs()); // Fetch all blogs on component mount
+    window.scrollTo(0, 0); // Scroll to the top of the page
   }, [dispatch]);
 
   return (
@@ -25,8 +22,6 @@ const AllPosts = () => {
       <div>
         {Array.isArray(blogPosts) && blogPosts.length > 0 ? (
           blogPosts.map((post) => (
-            // Debugging: Log each post before rendering
-            console.log("Rendering post:", post),
             <PostCard key={post.id} post={post} /> // Pass each post to PostCard
           ))
         ) : (
