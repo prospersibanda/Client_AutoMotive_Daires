@@ -1,16 +1,17 @@
-.post-blog-page {
-  padding: 8vh 10vh;
-  font-family: 'Poppins', sans-serif;
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #f9f9f9;
+.create-blog-container {
+  max-width: 600px;
+  margin: 40px auto;
+  background-color: #fff;
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.post-blog-page h2 {
-  font-size: 2.5em;
+.create-blog-container h2 {
   text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
   margin-bottom: 20px;
 }
 
@@ -19,58 +20,78 @@
 }
 
 .form-group label {
+  font-size: 16px;
+  color: #555;
   display: block;
-  font-size: 1.2em;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
+  font-size: 14px;
+  border: 1px solid #ddd;
   border-radius: 5px;
-  font-size: 1em;
+  background-color: #f9f9f9;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: #007bff;
+  background-color: #fff;
 }
 
 .form-group textarea {
   height: 100px;
+  resize: none;
 }
 
-.image-upload {
-  display: flex;
-  align-items: center;
+.form-group select {
+  cursor: pointer;
 }
 
-.image-placeholder {
-  width: 150px;
-  height: 150px;
+/* Image Upload Section */
+.image-upload-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.image-preview img {
+  max-width: 200px;
+  height: auto;
   border-radius: 10px;
-  margin-right: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.image-upload-label {
-  background-color: #ff5959;
-  color: white;
-  padding: 10px 20px;
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color: #232536;
+  color: #fff;
+  font-size: 16px;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
 }
 
-button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  font-size: 1.2em;
-  background-color: #ff5959;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  margin-top: 20px;
+button[type="submit"]:hover {
+  background-color:#0f0f14;
 }
 
-button:hover {
-  background-color: #e04f4f;
+.error {
+  color: #e74c3c;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.success {
+  color: #2ecc71;
+  text-align: center;
+  margin-bottom: 20px;
 }

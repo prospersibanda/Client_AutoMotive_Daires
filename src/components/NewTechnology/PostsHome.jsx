@@ -23,6 +23,11 @@ const PostsHome = () => {
     navigate('/blogs'); // Navigate to the /blogs page
   };
 
+  // Pass the blog ID to the Card component to navigate on click
+  const handlePostClick = (postId) => {
+    navigate(`/post/${postId}`); // Navigate to the blog post page by its ID
+  };
+
   return (
     <div className='new-technology'>
       <div className='header'>
@@ -31,7 +36,7 @@ const PostsHome = () => {
       </div>
       <div className='cards'>
         {randomPosts.map((post) => (
-          <Card key={post.id} post={post} /> // Pass each random post to the Card component
+          <Card key={post.id} post={post} onClick={() => handlePostClick(post.id)} /> 
         ))}
       </div>
     </div>

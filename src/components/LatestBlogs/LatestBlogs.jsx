@@ -1,13 +1,22 @@
 import React, { useEffect } from 'react';
 import './LatestBlogs.css';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { fetchBlogs } from '../../store/actions/blogActions'; // Assuming you have this action to fetch blogs
 
 const LatestBlogs = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Fetch all blog posts from Redux store
   const blogs = useSelector((state) => state.blogs.blogs || []);
+
+  // Fetch blogs when component mounts
+  useEffect(() => {
+    if (blogs.length === 0) {
+      dispatch(fetchBlogs()); // Fetch blogs if they are not already in state
+    }
+  }, [dispatch, blogs.length]);
 
   // Debugging: log the fetched blogs
   useEffect(() => {

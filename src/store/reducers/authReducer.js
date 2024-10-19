@@ -1,18 +1,19 @@
 const initialState = {
-  user: localStorage.getItem('user') && localStorage.getItem('user') !== 'undefined' 
-    ? JSON.parse(localStorage.getItem('user')) 
-    : null,
-  token: localStorage.getItem('token') || null,
+  user:
+    localStorage.getItem("user") && localStorage.getItem("user") !== "undefined"
+      ? JSON.parse(localStorage.getItem("user"))
+      : null,
+  token: localStorage.getItem("token") || null,
   error: null,
-  isAuthenticated: !!localStorage.getItem('token'), // Set to true if a token exists in localStorage
+  isAuthenticated: !!localStorage.getItem("token"), // Set to true if a token exists in localStorage
 };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'LOGIN_SUCCESS':
-    case 'SIGNUP_SUCCESS':
-      localStorage.setItem('token', action.payload.token); // Save token to localStorage
-      localStorage.setItem('user', JSON.stringify(action.payload.userData)); // Save user to localStorage
+    case "LOGIN_SUCCESS":
+    case "SIGNUP_SUCCESS":
+      localStorage.setItem("token", action.payload.token); // Save token to localStorage
+      localStorage.setItem("user", JSON.stringify(action.payload.userData)); // Save user to localStorage
       return {
         ...state,
         user: action.payload.userData,
@@ -21,15 +22,12 @@ const authReducer = (state = initialState, action) => {
         error: null,
       };
 
-    case 'LOGOUT':
-      localStorage.removeItem('token'); // Remove token from localStorage on logout
-      localStorage.removeItem('user');  // Remove user from localStorage on logout
+    case "LOGOUT_SUCCESS":
       return {
         ...state,
+        isAuthenticated: false,
         user: null,
         token: null,
-        isAuthenticated: false,
-        error: null,
       };
 
     default:

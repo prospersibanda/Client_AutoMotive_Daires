@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { likeBlog, shareBlog, toggleBookmark, addComment, fetchBlogs } from '../../store/actions/blogActions';
+import { shareBlog, toggleBookmark, addComment, fetchBlogs } from '../../store/actions/blogActions';
 import './BlogPost.css';
-import { FaBookmark, FaHeart, FaRegBookmark, FaRegComment, FaRegHeart, FaShareAlt } from 'react-icons/fa';
+import { FaBookmark, FaHeart, FaPaperPlane, FaRegBookmark, FaRegComment, FaRegHeart, FaShareAlt } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
+import profile_default from '../../assets/profile-default.jpg';
 
 const BlogPost = () => {
   const { id } = useParams(); // Get the blog ID from the URL
@@ -11,6 +12,10 @@ const BlogPost = () => {
 
   const [commentText, setCommentText] = useState('');
   const [showAllComments, setShowAllComments] = useState(false);
+
+  // State for managing likes locally
+  const [likes, setLikes] = useState(0);
+  const [userHasLiked, setUserHasLiked] = useState(false);
 
   // Fetch blogs from the store
   const blogs = useSelector((state) => state.blogs.blogs);
@@ -33,15 +38,40 @@ const BlogPost = () => {
     }
   }, [dispatch, blogs.length, blogPost]);
 
+  // Load likes and userHasLiked from localStorage when component mounts
+  useEffect(() => {
+    if (blogPost) {
+      const storedLikes = JSON.parse(localStorage.getItem('blogLikes')) || {};
+      const blogData = storedLikes[blogPost.id] || { likes: 0, userHasLiked: false };
+      setLikes(blogData.likes); // Set likes from localStorage or default to 0
+      setUserHasLiked(blogData.userHasLiked); // Set userHasLiked from localStorage or default to false
+    }
+  }, [blogPost]);
+
   // Scroll to the top when the component is loaded
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  // Update likes and userHasLiked in localStorage
+  const updateLocalStorage = (updatedLikes, updatedUserHasLiked) => {
+    const storedLikes = JSON.parse(localStorage.getItem('blogLikes')) || {};
+    storedLikes[blogPost.id] = { likes: updatedLikes, userHasLiked: updatedUserHasLiked };
+    localStorage.setItem('blogLikes', JSON.stringify(storedLikes));
+  };
+
+  // Handle like/unlike functionality locally
   const handleLike = () => {
-    if (blogPost) {
-      console.log('Liking blog post:', blogPost.id);
-      dispatch(likeBlog(blogPost.id));
+    if (!userHasLiked) {
+      const updatedLikes = likes + 1;
+      setLikes(updatedLikes); // Increment likes
+      setUserHasLiked(true); // Set the user has liked
+      updateLocalStorage(updatedLikes, true); // Update localStorage
+    } else {
+      const updatedLikes = likes - 1;
+      setLikes(updatedLikes); // Decrement likes
+      setUserHasLiked(false); // Set the user has unliked
+      updateLocalStorage(updatedLikes, false); // Update localStorage
     }
   };
 
@@ -79,7 +109,7 @@ const BlogPost = () => {
     return <p>Blog post not found!</p>;
   }
 
-  const visibleComments = showAllComments ? blogPost.comments : blogPost.comments.slice(0, 2);
+  const visibleComments = showAllComments ? blogPost.comments : blogPost.comments?.slice(0, 2) || [];
   console.log('Visible Comments:', visibleComments);
 
   return (
@@ -87,15 +117,16 @@ const BlogPost = () => {
       <img className="blog-image" src={blogPost.image} alt={blogPost.title} />
 
       <div className='post-engagement'>
-        {blogPost.likes.length > 0 ? (
-          <FaHeart onClick={handleLike} />
+        {/* Toggle between liked and unliked states based on local userHasLiked */}
+        {userHasLiked ? (
+          <FaHeart onClick={handleLike} style={{ cursor: 'pointer' }} />
         ) : (
-          <FaRegHeart onClick={handleLike} />
+          <FaRegHeart onClick={handleLike} style={{ cursor: 'pointer' }} />
         )}
-        <span>{blogPost.likes.length}</span>  {/* Rendering length instead of object */}
+        <span>{likes}</span> {/* Display the updated likes count */}
 
         <FaRegComment />
-        <span>{blogPost.comments.length}</span>  {/* Rendering length instead of object */}
+        <span>{blogPost.comments?.length || 0}</span> {/* Render the number of comments */}
 
         <FaShareAlt onClick={handleShare} />
         <span>{blogPost.shares}</span>
@@ -111,7 +142,7 @@ const BlogPost = () => {
 
       <div className='author-info'>
         <img
-          src={blogPost.author?.profilePicture || '/default-profile.jpg'}
+          src={blogPost.author?.profilePicture || profile_default}
           alt={blogPost.author?.name || 'Unknown Author'}
         />
         <h4>{blogPost.author?.name || 'Unknown Author'}</h4>
@@ -128,13 +159,16 @@ const BlogPost = () => {
 
         {isAuthenticated && (
           <div className='write-comment'>
+            <div className="comment-author">
+              <img src={profile_default} alt="author" />
+            </div>
             <input
               type="text"
               placeholder='Write a comment...'
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
             />
-            <button onClick={handleAddComment}>Post</button>
+            <button onClick={handleAddComment}><FaPaperPlane/></button>
           </div>
         )}
 
@@ -148,7 +182,7 @@ const BlogPost = () => {
             <div className='comment' key={comment.id}>
               <div className="comment-author">
                 <img
-                  src={comment.authorProfilePic || '/default-profile.jpg'}
+                  src={profile_default}
                   alt={authorName || 'Unknown Author'}
                 />
                 <h4>{authorName || 'Unknown Author'}</h4>
@@ -160,7 +194,7 @@ const BlogPost = () => {
           );
         })}
 
-        {blogPost.comments.length > 2 && (
+        {blogPost.comments?.length > 2 && (
           <p className='see-all' onClick={() => setShowAllComments(!showAllComments)}>
             {showAllComments ? 'Hide comments' : 'See all'}
           </p>

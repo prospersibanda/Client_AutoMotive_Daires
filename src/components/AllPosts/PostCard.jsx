@@ -1,16 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './AllPosts.css';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { likeBlog } from '../../store/actions/blogActions'; 
 import { FaBookmark, FaHeart, FaRegBookmark, FaRegComment, FaRegHeart, FaShareAlt } from 'react-icons/fa';
 
 const PostCard = ({ post }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // State for managing likes locally
+  const [likes, setLikes] = useState(0);
+  const [userHasLiked, setUserHasLiked] = useState(false);
+
+  // Load likes and userHasLiked from localStorage when component mounts
+  useEffect(() => {
+    if (post) {
+      const storedLikes = JSON.parse(localStorage.getItem('blogLikes')) || {};
+      const postData = storedLikes[post.id] || { likes: 0, userHasLiked: false };
+      setLikes(postData.likes); // Set likes from localStorage or default to 0
+      setUserHasLiked(postData.userHasLiked); // Set userHasLiked from localStorage or default to false
+    }
+  }, [post]);
+
+  // Update likes and userHasLiked in localStorage
+  const updateLocalStorage = (updatedLikes, updatedUserHasLiked) => {
+    const storedLikes = JSON.parse(localStorage.getItem('blogLikes')) || {};
+    storedLikes[post.id] = { likes: updatedLikes, userHasLiked: updatedUserHasLiked };
+    localStorage.setItem('blogLikes', JSON.stringify(storedLikes));
+  };
+
+  // Handle like/unlike functionality locally
   const handleLike = () => {
-    dispatch(likeBlog(post.id)); 
+    if (!userHasLiked) {
+      const updatedLikes = likes + 1;
+      setLikes(updatedLikes); // Increment likes
+      setUserHasLiked(true); // Set the user has liked
+      updateLocalStorage(updatedLikes, true); // Update localStorage
+    } else {
+      const updatedLikes = likes - 1;
+      setLikes(updatedLikes); // Decrement likes
+      setUserHasLiked(false); // Set the user has unliked
+      updateLocalStorage(updatedLikes, false); // Update localStorage
+    }
   };
 
   const handleReadFullArticle = () => {
@@ -23,20 +52,6 @@ const PostCard = ({ post }) => {
   // Safely accessing post.author fields
   const authorName = post.author?.name || post.author?.fullname || 'Unknown Author'; 
   const authorProfilePic = post.author?.profilePicture || '/default-profile-pic.jpg'; 
-
-  // Additional logging for debugging
-  console.log('Author Name:', authorName);
-  console.log('Profile Picture URL:', authorProfilePic);
-
-  // Ensure post.description is a string
-  if (typeof post.description !== 'string') {
-    console.error('Post description is not a string:', post.description);
-  }
-
-  // Check likes, comments, and shares
-  console.log('Likes:', post.likes);
-  console.log('Comments:', post.comments);
-  console.log('Shares:', post.shares);
 
   return (
     <div className='post-card'>
@@ -57,12 +72,13 @@ const PostCard = ({ post }) => {
         <button onClick={handleReadFullArticle}>Read full article</button>
 
         <div className='post-engagement'>
-          {typeof post.likes === 'number' && post.likes > 0 ? (
-            <FaHeart onClick={handleLike} />
+          {/* Toggle between liked and unliked states based on local userHasLiked */}
+          {userHasLiked ? (
+            <FaHeart onClick={handleLike} style={{ cursor: 'pointer' }} />
           ) : (
-            <FaRegHeart onClick={handleLike} />
+            <FaRegHeart onClick={handleLike} style={{ cursor: 'pointer' }} />
           )}
-          <span>{typeof post.likes === 'number' ? post.likes : 0}</span>
+          <span>{likes}</span> {/* Display the updated likes count */}
 
           <FaRegComment />
           <span>{Array.isArray(post.comments) ? post.comments.length : 0}</span>

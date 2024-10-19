@@ -14,7 +14,6 @@ export const fetchBlogs = () => async (dispatch) => {
 export const likeBlog = (blogId) => async (dispatch, getState) => {
   try {
     const { auth: { token } } = getState();
-
     const config = {
       headers: {
         Authorization: `Bearer ${token}`, // Attach the token
@@ -31,6 +30,7 @@ export const likeBlog = (blogId) => async (dispatch, getState) => {
     dispatch({ type: 'LIKE_BLOG_FAIL', payload: error.message });
   }
 };
+
 
 
 

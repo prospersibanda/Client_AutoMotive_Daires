@@ -1,9 +1,17 @@
 import React from 'react';
 import './PostsHome.css';
+import { useNavigate } from 'react-router-dom';
 
 const Card = ({ post }) => {
+  const navigate = useNavigate();
+
+  // Handle card click to navigate to the respective blog post
+  const handleCardClick = () => {
+    navigate(`/post/${post.id}`);
+  };
+
   return (
-    <div className='newTech-card'>
+    <div className='newTech-card' onClick={handleCardClick} style={{ cursor: 'pointer' }}> {/* Add click functionality */}
       <img className='main-img' src={post.image} alt={post.title} />
       <h3>{post.title}</h3>
       <div className='author'>

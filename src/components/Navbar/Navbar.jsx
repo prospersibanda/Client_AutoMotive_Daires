@@ -1,8 +1,22 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux'; // Import useDispatch
+import { logout } from '../../store/actions/authActions'; // Import the logout action
 import './Navbar.css';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch(); // Initialize dispatch
+
+  // Handle logout
+  const handleLogout = () => {
+    // Dispatch the logout action to update Redux state
+    dispatch(logout());
+
+    // Redirect to the login page
+    navigate('/login');
+  };
+
   return (
     <div className='navbar'>
       <h1>AutoMotive Diaries</h1>
@@ -37,7 +51,7 @@ const Navbar = () => {
             </NavLink>
           </li>
         </ul>
-        <button className='logout-btn'>Logout</button>
+        <button className='logout-btn' onClick={handleLogout}>Logout</button>
       </div>
     </div>
   );

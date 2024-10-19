@@ -53,6 +53,7 @@
 .comments{
     display: flex;
     flex-direction: column;
+    margin: 10vh;
     gap: 10px;
 }
 .comment{
@@ -82,14 +83,21 @@
 }
 .write-comment{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+}
+.write-comment button{
+    border-radius: 0 10px 10px 0;
+    border: none;
+    color: #fff;
+    width: 8vh;
+    background: #ff5959;
 }
 .write-comment input{
-    margin-left: 21vh;
+    margin-left: 3vh;
     padding: 10px 10px;
-    border-radius: 10px;
+    border-radius: 10px 0px 0px 10px;
     width: 60vh;
-    border: 1px solid black;
+    border: 1px solid gray;
 }
 .write-comment img{
     width: 5vh;
