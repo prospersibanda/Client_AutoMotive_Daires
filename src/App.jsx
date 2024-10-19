@@ -13,6 +13,7 @@ import ProtectedRoute from './auth/ProtectedRoute';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { loadUserFromStorage } from './store/actions/authActions';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -27,15 +28,17 @@ function App() {
           <Route 
           path='/'
            element={
-                <HomePage />
+            <ProtectedRoute><HomePage /></ProtectedRoute>
+                
             }/>
           <Route path='/signup' element={<SignupLoginPage />} />
           <Route path='/login' element={<LoginPage />} />
-          <Route path='/blogs' element={<BlogsPage />} />
-          <Route path='/trending' element={<TrendingPage />} />
-          <Route path='/posting' element={<PostingPage />} />
-          <Route path="/category/:categoryName" element={<CategoryPage />} /> 
-          <Route path='/post/:id' element={<BlogPostPage />} />
+          <Route path='/blogs' element={<ProtectedRoute><BlogsPage /></ProtectedRoute>} />
+          <Route path='/trending' element={<ProtectedRoute><TrendingPage /></ProtectedRoute>} />
+          <Route path='/posting' element={<ProtectedRoute><PostingPage /></ProtectedRoute> } />
+          <Route path="/category/:categoryName" element={<ProtectedRoute><CategoryPage /></ProtectedRoute>} /> 
+          <Route path='/post/:id' element={<ProtectedRoute><BlogPostPage /></ProtectedRoute>} />
+          <Route path='*' element={<NotFoundPage/>}/>
         </Routes>
       </Router>
     </div>

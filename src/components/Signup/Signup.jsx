@@ -130,8 +130,9 @@ const handleSubmit = (e) => {
             />
           </div>
 
-          <div className='input-field'>
+          <div>
             <input
+              className='checkbox'
               type="checkbox"
               name="termsAgreed"
               checked={formData.termsAgreed}
@@ -139,7 +140,7 @@ const handleSubmit = (e) => {
                 setFormData({ ...formData, termsAgreed: e.target.checked })
               }
             />
-            <label>
+            <label className='lbl-checkbox'>
               I agree to the <span>terms</span> and <span>Privacy policy</span>
             </label>
           </div>

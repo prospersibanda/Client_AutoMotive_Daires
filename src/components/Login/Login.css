@@ -1,6 +1,7 @@
 .Login{
     font-family: 'Poppins', sans-serif;
     display: flex;
+    height: 100vh;
 }
 .Login-left{
     background: #ff5959;
@@ -34,6 +35,7 @@
 }
 .Login-right span{
     color: #ff5959;
+    cursor: pointer;
 }
 .forgot{
     color: #ff5959;

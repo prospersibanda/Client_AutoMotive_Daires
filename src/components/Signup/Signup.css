@@ -1,6 +1,7 @@
 .signup{
     font-family: 'Poppins', sans-serif;
     display: flex;
+    height: 100vh !important;
 }
 .signup-left{
     background: #ff5959;
@@ -34,6 +35,7 @@
 }
 .signup-right span{
     color: #ff5959;
+    cursor: pointer;
 }
 
 .image-uploader {
@@ -80,5 +82,11 @@
   
   input[type="file"] {
     display: none; /* Hide the file input field */
+  }
+  .checkbox{
+    margin: 0;
+    margin-bottom: 5vh;
+    width: 4vh;
+    cursor: pointer;
   }
   
