@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import './Signup.css';
 import phone_img from '../../assets/signup.png';
 import profileImage from '../../assets/author1.jpg';
-import { useDispatch } from 'react-redux';
-import { signup } from '../../store/actions/authActions'; // Import signup action from actions
+import { useDispatch, useSelector } from 'react-redux';
+import { signup } from '../../store/actions/authActions'; 
 import { FaEdit } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { loading, error } = useSelector((state) => state.auth); // Get loading and error state from Redux
 
   const [image, setImage] = useState(null); // Store the image file
   const [formData, setFormData] = useState({
@@ -19,7 +21,6 @@ const Signup = () => {
     termsAgreed: false,
   });
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -28,36 +29,27 @@ const Signup = () => {
     });
   };
 
-  // Handle image upload
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setImage(file); // Store the file itself for backend submission
+      setImage(file); 
     }
   };
 
-  // Handle form submission
-// Handle form submission
-const handleSubmit = (e) => {
-  e.preventDefault();
-  if (formData.termsAgreed) {
-    // Create FormData to handle image and other fields
-    const userData = new FormData();
-    userData.append('fullname', formData.fullname);
-    userData.append('email', formData.email);
-    userData.append('password', formData.password);
-    userData.append('profilePic', image); // Append image file with the correct key
-    
-    // Dispatch signup action
-    dispatch(signup(userData));
-    
-    // Navigate to login page
-    navigate('/login');
-  } else {
-    alert('Please agree to the terms and privacy policy');
-  }
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.termsAgreed) {
+      const userData = new FormData();
+      userData.append('fullname', formData.fullname);
+      userData.append('email', formData.email);
+      userData.append('password', formData.password);
+      userData.append('profilePic', image);
 
+      dispatch(signup(userData)); 
+    } else {
+      alert('Please agree to the terms and privacy policy');
+    }
+  };
 
   return (
     <div className='signup'>
@@ -74,6 +66,9 @@ const handleSubmit = (e) => {
           <h1>Create account</h1>
           <p>Every mile tells a Story</p>
         </div>
+
+        {error && <p className="error">{error}</p>} 
+
         <form onSubmit={handleSubmit}>
           <div className="image-uploader">
             <div className="image-placeholder">
@@ -91,7 +86,7 @@ const handleSubmit = (e) => {
                   type="file"
                   accept="image/*"
                   onChange={handleImageUpload}
-                  style={{ display: 'none' }} // Hide the file input button
+                  style={{ display: 'none' }} 
                 />
               </div>
             </div>
@@ -145,7 +140,9 @@ const handleSubmit = (e) => {
             </label>
           </div>
 
-          <button type="submit">Create account</button>
+          <button type="submit" className='signup-button' disabled={loading}>
+            {loading ? 'Creating account...' : 'Create account'} {/* Show loading status */}
+          </button>
         </form>
         <p>Already have an account? <span onClick={() => navigate('/login')}>Log in</span></p>
       </div>

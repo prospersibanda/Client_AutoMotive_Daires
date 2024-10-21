@@ -3,7 +3,12 @@ import api from "./api"; // Import the configured Axios instance
 // Login action
 export const login = (userCredentials) => async (dispatch) => {
   try {
+    // Dispatch the login request action to show the loading state
+    dispatch({ type: "LOGIN_REQUEST" });
+
     const { data } = await api.post("/api/auth/login", userCredentials); // Backend API call
+
+    // Dispatch success action
     dispatch({
       type: "LOGIN_SUCCESS",
       payload: {
@@ -11,11 +16,15 @@ export const login = (userCredentials) => async (dispatch) => {
         token: data.token, // Token from the response
       },
     });
-    localStorage.setItem("token", data.token); // Store token in localStorage
+
+    // Store token in localStorage
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.userData));
   } catch (error) {
+    // Dispatch failure action
     dispatch({
       type: "LOGIN_FAIL",
-      payload: error.response?.data?.message || "Login failed", // Handle error
+      payload: error.response?.data?.message || "Server error: Unable to login",
     });
   }
 };
@@ -23,6 +32,9 @@ export const login = (userCredentials) => async (dispatch) => {
 // Signup action
 export const signup = (userData) => async (dispatch) => {
   try {
+    // Dispatch loading action
+    dispatch({ type: "SIGNUP_REQUEST" });
+
     const config = {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -32,9 +44,6 @@ export const signup = (userData) => async (dispatch) => {
 
     // Dispatch success action
     dispatch({ type: "SIGNUP_SUCCESS", payload: data });
-
-    // Optionally log or handle the success message here
-    console.log(data.message);
   } catch (error) {
     // Dispatch failure action
     dispatch({

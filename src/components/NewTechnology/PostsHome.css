@@ -41,6 +41,7 @@
 }
 .author img{
     width: 8vh;
+    height: 8vh;
     border-radius: 50%;
 }
 .author-head p{

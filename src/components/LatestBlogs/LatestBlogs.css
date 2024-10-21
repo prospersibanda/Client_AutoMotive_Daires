@@ -59,17 +59,18 @@
 .blog{
     margin-top: 40px;
     margin-left: 20px;
+    cursor: pointer;
 }
 .trending-blogs h2{
     width: 60vh;
 }
-.blog-highlight{
+.blog:hover{
     background: #ff5959;
     color: #fff;
     padding: 20px 20px;
     margin-top: 20px;
     border-radius: 10px;
 }
-.blog-highlight span{
+.blog:hover span{
     color: #fff;
 }

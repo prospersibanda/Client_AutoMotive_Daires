@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { error, isAuthenticated } = useSelector((state) => state.auth);
+
+  const { error, isAuthenticated, loading } = useSelector((state) => state.auth); // Include loading state
 
   const [formData, setFormData] = useState({
     email: '',
@@ -33,10 +34,9 @@ const Login = () => {
   // Navigate to home page only if authenticated and prevent repeated navigation
   useEffect(() => {
     if (isAuthenticated) {
-      console.log('Navigating to home...');
       navigate('/', { replace: true }); // Use { replace: true } to prevent push history.
     }
-  }, [isAuthenticated, navigate]); // Ensure it only runs when `isAuthenticated` changes.
+  }, [isAuthenticated, navigate]); 
 
   return (
     <div className='Login'>
@@ -53,7 +53,9 @@ const Login = () => {
           <h1>Login</h1>
           <p>Every mile tells a Story</p>
         </div>
+
         {error && <p className='error'>{error}</p>} {/* Display error if any */}
+        
         <form onSubmit={handleSubmit}>
           <div className='input-field'>
             <p>Email Address*</p>
@@ -77,9 +79,12 @@ const Login = () => {
             />
           </div>
 
-          <button type="submit" className='login-button'>Login</button>
+          <button type="submit" className='login-button' disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
         </form>
-        <p>Don't have an account? <span onClick={() => navigate('/signup')}>Sign up</span></p> {/* Navigate to signup */}
+
+        <p>Don't have an account? <span onClick={() => navigate('/signup')}>Sign up</span></p>
       </div>
     </div>
   );
